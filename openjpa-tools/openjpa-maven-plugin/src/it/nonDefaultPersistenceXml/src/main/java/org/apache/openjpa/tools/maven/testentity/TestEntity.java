@@ -18,8 +18,8 @@
  */
 package org.apache.openjpa.tools.maven.testentity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 
 @Entity
