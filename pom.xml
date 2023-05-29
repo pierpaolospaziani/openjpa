@@ -45,6 +45,7 @@
         <sonar.coverage.jacoco.xmlReportPaths>../test-jacoco/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
         <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+        <mockito.version>3.12.4</mockito.version>
 
 
         <java.class.version>1.8</java.class.version>
@@ -113,7 +114,7 @@
 
         <jmock.version>2.9.0</jmock.version>
         <dbcp2.version>2.8.0</dbcp2.version>
-	<pool2.version>2.9.0</pool2.version>
+	    <pool2.version>2.9.0</pool2.version>
     </properties>
 
     <licenses>
@@ -1941,6 +1942,16 @@
                 <artifactId>annotations</artifactId>
                 <version>3.0.1</version>
             </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-inline</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -1954,6 +1965,16 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>${mockito.version}</version>
         </dependency>
     </dependencies>
 
@@ -2005,71 +2026,71 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${maven.surefire.version}</version>
-                    <configuration>
-                        <argLine>${surefire.jvm.args}</argLine>
-                        <redirectTestOutputToFile>true</redirectTestOutputToFile>
-                        <trimStackTrace>false</trimStackTrace>
-                        <useSystemClassLoader>true</useSystemClassLoader>
-                        <excludes>
-                            <!-- exclude classes that include a $; inner classes
-                                 are not test cases per OpenJPA standards -->
-                            <exclude>org/apache/openjpa/**/*$*.class</exclude>
-                        </excludes>
-                    <systemProperties>
-                        <property>
-                            <name>openjpa.Log</name>
-                            <value>${openjpa.Log}</value>
-                        </property>
-                        <property>
-                            <name>openjpa.DynamicEnhancementAgent</name>
-                            <value>${openjpa.DynamicEnhancementAgent}</value>
-                        </property>
-                        <property>
-                            <name>openjpa.ConnectionDriverName</name>
-                            <value>${connection.driver.name}</value>
-                        </property>
-                        <property>
-                            <name>openjpa.ConnectionURL</name>
-                            <value>${connection.url}</value>
-                        </property>
-                        <property>
-                            <name>openjpa.ConnectionUserName</name>
-                            <value>${connection.username}</value>
-                        </property>
-                        <property>
-                            <name>openjpa.ConnectionPassword</name>
-                            <value>${connection.password}</value>
-                        </property>
-                        <property>
-                            <name>openjpa.jdbc.DBDictionary</name>
-                            <value>${jdbc.DBDictionary}</value>
-                        </property>
-                        <property>
-                            <name>derby.stream.error.file</name>
-                            <value>target/derby.log</value>
-                        </property>
-                        <property>
-                            <name>derby.locks.deadlockTimeout</name>
-                            <value>${derby.locks.deadlockTimeout}</value>
-                        </property>
-                        <property>
-                            <name>derby.locks.waitTimeout</name>
-                            <value>${derby.locks.waitTimeout}</value>
-                        </property>
-                        <property>
-                            <name>openjpa.ConnectionProperties</name>
-                            <value>${dbcp.args}</value>
-                        </property>
-                        <property>
-                            <name>tests.openjpa.allowfailure</name>
-                            <value>${tests.openjpa.allowfailure}</value>
-                        </property>
-                        <property>
-                            <name>openjpa.jdbc.DriverDataSource</name>
-                            <value>${tests.openjpa.driverDataSource}</value>
-                        </property>
-                    </systemProperties>
-                    </configuration>
+<!--                    <configuration>-->
+<!--                        <argLine>${surefire.jvm.args}</argLine>-->
+<!--                        <redirectTestOutputToFile>true</redirectTestOutputToFile>-->
+<!--                        <trimStackTrace>false</trimStackTrace>-->
+<!--                        <useSystemClassLoader>true</useSystemClassLoader>-->
+<!--                        <excludes>-->
+<!--                            &lt;!&ndash; exclude classes that include a $; inner classes-->
+<!--                                 are not test cases per OpenJPA standards &ndash;&gt;-->
+<!--                            <exclude>org/apache/openjpa/**/*$*.class</exclude>-->
+<!--                        </excludes>-->
+<!--                    <systemProperties>-->
+<!--                        <property>-->
+<!--                            <name>openjpa.Log</name>-->
+<!--                            <value>${openjpa.Log}</value>-->
+<!--                        </property>-->
+<!--                        <property>-->
+<!--                            <name>openjpa.DynamicEnhancementAgent</name>-->
+<!--                            <value>${openjpa.DynamicEnhancementAgent}</value>-->
+<!--                        </property>-->
+<!--                        <property>-->
+<!--                            <name>openjpa.ConnectionDriverName</name>-->
+<!--                            <value>${connection.driver.name}</value>-->
+<!--                        </property>-->
+<!--                        <property>-->
+<!--                            <name>openjpa.ConnectionURL</name>-->
+<!--                            <value>${connection.url}</value>-->
+<!--                        </property>-->
+<!--                        <property>-->
+<!--                            <name>openjpa.ConnectionUserName</name>-->
+<!--                            <value>${connection.username}</value>-->
+<!--                        </property>-->
+<!--                        <property>-->
+<!--                            <name>openjpa.ConnectionPassword</name>-->
+<!--                            <value>${connection.password}</value>-->
+<!--                        </property>-->
+<!--                        <property>-->
+<!--                            <name>openjpa.jdbc.DBDictionary</name>-->
+<!--                            <value>${jdbc.DBDictionary}</value>-->
+<!--                        </property>-->
+<!--                        <property>-->
+<!--                            <name>derby.stream.error.file</name>-->
+<!--                            <value>target/derby.log</value>-->
+<!--                        </property>-->
+<!--                        <property>-->
+<!--                            <name>derby.locks.deadlockTimeout</name>-->
+<!--                            <value>${derby.locks.deadlockTimeout}</value>-->
+<!--                        </property>-->
+<!--                        <property>-->
+<!--                            <name>derby.locks.waitTimeout</name>-->
+<!--                            <value>${derby.locks.waitTimeout}</value>-->
+<!--                        </property>-->
+<!--                        <property>-->
+<!--                            <name>openjpa.ConnectionProperties</name>-->
+<!--                            <value>${dbcp.args}</value>-->
+<!--                        </property>-->
+<!--                        <property>-->
+<!--                            <name>tests.openjpa.allowfailure</name>-->
+<!--                            <value>${tests.openjpa.allowfailure}</value>-->
+<!--                        </property>-->
+<!--                        <property>-->
+<!--                            <name>openjpa.jdbc.DriverDataSource</name>-->
+<!--                            <value>${tests.openjpa.driverDataSource}</value>-->
+<!--                        </property>-->
+<!--                    </systemProperties>-->
+<!--                    </configuration>-->
                 </plugin>
                 <plugin>
                     <groupId>io.fabric8</groupId>
@@ -2251,6 +2272,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
                 <executions>
                     <execution>
                         <id>test-source-compile</id>
