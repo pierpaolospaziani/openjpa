@@ -38,6 +38,15 @@
     <version>3.2.3-SNAPSHOT</version>
 
     <properties>
+
+        <!-- JaCoCo additions -->
+        <sonar.organization>pierpaolospaziani</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.coverage.jacoco.xmlReportPaths>../test-jacoco/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
+        <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M5</maven-surefire-plugin.version>
+
+
         <java.class.version>1.8</java.class.version>
         <java.testclass.version>1.8</java.testclass.version>
 
@@ -185,12 +194,13 @@
         <module>openjpa-kubernetes</module>
         <module>openjpa</module>
         <module>openjpa-project</module>
-        <module>openjpa-examples</module>
         <module>openjpa-integration</module>
         <module>openjpa-all</module>
         <module>openjpa-tools</module>
         <module>openjpa-features</module>
         <module>openjpa-junit5</module>
+        <!-- added to perform JaCoCo coverage -->
+        <module>test-jacoco</module>
     </modules>
 
     <profiles>
@@ -1742,6 +1752,33 @@
                     </releases>
                 </repository>
             </repositories>
+        </profile>
+
+        <!-- JaCoCo profile -->
+        <profile>
+            <id>coverage</id>
+            <activation>
+                <property>
+                    <name>!skipcoverage</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>0.8.8</version>
+                        <executions>
+                            <execution>
+                                <id>prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
 
     </profiles>
