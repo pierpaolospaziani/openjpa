@@ -1759,9 +1759,7 @@
         <profile>
             <id>coverage</id>
             <activation>
-                <property>
-                    <name>!skipcoverage</name>
-                </property>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <build>
                 <plugins>

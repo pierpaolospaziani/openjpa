@@ -71,6 +71,12 @@
             <artifactId>xbean-asm9-shaded</artifactId>
             <version>${xbean.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -161,5 +167,51 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!-- Mutation PIT profile -->
+        <profile>
+            <id>mutation</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <withHistory>true</withHistory>
+                <pitest.version>1.8.0</pitest.version>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-maven</artifactId>
+                        <version>1.14.0</version>
+                        <configuration>
+<!--                            <verbose>true</verbose>-->
+                            <targetClasses>
+                                <!-- classes to test  -->
+                                <param>org.apache.openjpa.kernel.BrokerImpl</param>
+                            </targetClasses>
+                            <targetTests>
+                                <!-- test implementations -->
+                                <param>org.apache.openjpa.kernel.BrokerImplHandleCallbackExceptionsTest</param>
+                            </targetTests>
+                            <avoidCallsTo>
+                                <avoidCallsTo>org.slf4j</avoidCallsTo>
+                            </avoidCallsTo>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>Mutation report</id>
+                                <phase>test-compile</phase>
+                                <goals>
+                                    <goal>mutationCoverage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
