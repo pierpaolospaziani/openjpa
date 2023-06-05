@@ -194,6 +194,7 @@
                             <targetTests>
                                 <!-- test implementations -->
                                 <param>org.apache.openjpa.kernel.BrokerImplHandleCallbackExceptionsTest</param>
+                                <param>org.apache.openjpa.kernel.BrokerImplThrowNestedExceptionsTest</param>
                             </targetTests>
                             <avoidCallsTo>
                                 <avoidCallsTo>org.slf4j</avoidCallsTo>

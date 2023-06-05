@@ -1,6 +1,7 @@
 package org.apache.openjpa.kernel;
 
 import org.apache.openjpa.lib.log.Log;
+import org.apache.openjpa.util.CallbackException;
 import org.apache.openjpa.util.WrappedException;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,7 +13,6 @@ import org.junit.runners.Parameterized.Parameters;
 import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collection;
@@ -60,7 +60,7 @@ public class BrokerImplHandleCallbackExceptionsTest {
     }
 
     @Before
-    public  void configure() {
+    public void configure() {
         broker = new BrokerImpl();
         try {
             if (this.mode == CALLBACK_ROLLBACK && expectedException != null){
@@ -85,27 +85,27 @@ public class BrokerImplHandleCallbackExceptionsTest {
     @Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][] {
-                { ObjType.NULL,               -1,           InvocationTargetException.class },  // 0
-                { ObjType.NULL,                0,           InvocationTargetException.class },  // 1
-                { ObjType.NULL,                1,           InvocationTargetException.class },  // 2
-                { ObjType.EMPTY,              -1,                         null              },  // 3
-                { ObjType.EMPTY,               0,                         null              },  // 4
-                { ObjType.EMPTY,               1,                         null              },  // 5
-                { ObjType.VALID_ONE,          -1,                         null              },  // 6
-                { ObjType.VALID_ONE,           0,                         null              },  // 7
-                { ObjType.VALID_ONE,           1,                         null              },  // 8
-                { ObjType.VALID,              -1,                         null              },  // 9
-                { ObjType.VALID,               0,                         null              },  // 10
-                { ObjType.VALID,               1,                         null              },  // 11
-                { ObjType.WRAPPED,            -1,                         null              },  // 12
-                { ObjType.WRAPPED,             0,           InvocationTargetException.class },  // 13
-                { ObjType.WRAPPED,             1,           InvocationTargetException.class },  // 14
-                { ObjType.VALID,       CALLBACK_IGNORE,                   null              },  // 15
-                { ObjType.VALID,       CALLBACK_ROLLBACK,                 null              },  // 16
-                { ObjType.VALID,       CALLBACK_ROLLBACK,   InvocationTargetException.class },  // 17
-                { ObjType.VALID,       CALLBACK_LOG,        InvocationTargetException.class },  // 18
-                { ObjType.VALID,       CALLBACK_LOG,                      null              },  // 19
-                { ObjType.VALID,       CALLBACK_RETHROW,    InvocationTargetException.class }   // 20
+                { ObjType.NULL,               -1,           NullPointerException.class },  // 0
+                { ObjType.NULL,                0,           NullPointerException.class },  // 1
+                { ObjType.NULL,                1,           NullPointerException.class },  // 2
+                { ObjType.EMPTY,              -1,                      null            },  // 3
+                { ObjType.EMPTY,               0,                      null            },  // 4
+                { ObjType.EMPTY,               1,                      null            },  // 5
+                { ObjType.VALID_ONE,          -1,                      null            },  // 6
+                { ObjType.VALID_ONE,           0,                      null            },  // 7
+                { ObjType.VALID_ONE,           1,                      null            },  // 8
+                { ObjType.VALID,              -1,                      null            },  // 9
+                { ObjType.VALID,               0,                      null            },  // 10
+                { ObjType.VALID,               1,                      null            },  // 11
+                { ObjType.WRAPPED,            -1,                      null            },  // 12
+                { ObjType.WRAPPED,             0,             WrappedException.class   },  // 13
+                { ObjType.WRAPPED,             1,             WrappedException.class   },  // 14
+                { ObjType.VALID,       CALLBACK_IGNORE,                null            },  // 15
+                { ObjType.VALID,       CALLBACK_ROLLBACK,              null            },  // 16
+                { ObjType.VALID,       CALLBACK_ROLLBACK,         Exception.class      },  // 17
+                { ObjType.VALID,       CALLBACK_LOG,        NullPointerException.class },  // 18
+                { ObjType.VALID,       CALLBACK_LOG,                   null            },  // 19
+                { ObjType.VALID,       CALLBACK_RETHROW,      CallbackException.class  }   // 20
         });
     }
 
@@ -123,12 +123,95 @@ public class BrokerImplHandleCallbackExceptionsTest {
             } else {
                 Assertions.assertThrows(expectedException, () -> {
                     // Codice di test che dovrebbe sollevare un'eccezione
-                    handleCallbackExceptions.invoke(broker, this.exceps, this.mode);
+                    try {
+                        handleCallbackExceptions.invoke(broker, this.exceps, this.mode);
+                    } catch (Exception e){
+                        throw e.getCause();
+                    }
                     Assert.fail();
                 });
             }
         } catch (NoSuchMethodException e) {
             Assert.fail("The reflection raised an exception!");
+        }
+    }
+
+    public class DummyLog implements Log {
+
+        @Override
+        public boolean isTraceEnabled() {
+            return false;
+        }
+
+        @Override
+        public boolean isInfoEnabled() {
+            return false;
+        }
+
+        @Override
+        public boolean isWarnEnabled() {
+            System.out.println("PEPPE");
+            return false;
+        }
+
+        @Override
+        public boolean isErrorEnabled() {
+            return false;
+        }
+
+        @Override
+        public boolean isFatalEnabled() {
+            return false;
+        }
+
+        @Override
+        public void trace(Object o) {
+
+        }
+
+        @Override
+        public void trace(Object o, Throwable t) {
+
+        }
+
+        @Override
+        public void info(Object o) {
+
+        }
+
+        @Override
+        public void info(Object o, Throwable t) {
+
+        }
+
+        @Override
+        public void warn(Object o) {
+
+        }
+
+        @Override
+        public void warn(Object o, Throwable t) {
+
+        }
+
+        @Override
+        public void error(Object o) {
+
+        }
+
+        @Override
+        public void error(Object o, Throwable t) {
+
+        }
+
+        @Override
+        public void fatal(Object o) {
+
+        }
+
+        @Override
+        public void fatal(Object o, Throwable t) {
+
         }
     }
 }
