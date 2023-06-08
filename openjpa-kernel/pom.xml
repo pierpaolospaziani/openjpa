@@ -77,6 +77,11 @@
             <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -165,6 +170,28 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Added for Integration Testing -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.0.0-M6</version>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>verify</id>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
@@ -190,11 +217,14 @@
                             <targetClasses>
                                 <!-- classes to test  -->
                                 <param>org.apache.openjpa.kernel.BrokerImpl</param>
+                                <param>org.apache.openjpa.util.ProxyManagerImpl</param>
                             </targetClasses>
                             <targetTests>
                                 <!-- test implementations -->
                                 <param>org.apache.openjpa.kernel.BrokerImplHandleCallbackExceptionsTest</param>
                                 <param>org.apache.openjpa.kernel.BrokerImplThrowNestedExceptionsTest</param>
+                                <param>org.apache.openjpa.util.ProxyManagerImplLoadBuildTimeProxyTest</param>
+                                <param>org.apache.openjpa.util.ProxyManagerImplCopyDateTest</param>
                             </targetTests>
                             <avoidCallsTo>
                                 <avoidCallsTo>org.slf4j</avoidCallsTo>

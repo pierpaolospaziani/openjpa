@@ -86,7 +86,7 @@ public class BrokerImplThrowNestedExceptionsTest {
     }
 
     @Test
-    public void handleCallbackExceptionsTest() {
+    public void throwNestedExceptionsTest() {
         try {
             // Utilizzo della reflection per ottenere il metodo privato
             Method throwNestedExceptions = BrokerImpl.class.getDeclaredMethod("throwNestedExceptions", List.class, boolean.class);
