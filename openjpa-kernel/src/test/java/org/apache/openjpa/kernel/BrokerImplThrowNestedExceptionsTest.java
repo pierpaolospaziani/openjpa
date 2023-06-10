@@ -45,21 +45,23 @@ public class BrokerImplThrowNestedExceptionsTest {
             case VALID:
                 this.exceps.add(new Exception("First dummy exception!"));
                 this.exceps.add(new Exception("Second dummy exception!"));
-                OpenJPAException openJPAException = new OpenJPAException() {
-                    @Override
-                    public int getType() {
-                        return 0;
-                    }
-                };
-                this.exceps.add(openJPAException);
-                OpenJPAException fatalOpenJPAException = new OpenJPAException() {
-                    @Override
-                    public int getType() {
-                        return 0;
-                    }
-                };
-                fatalOpenJPAException.setFatal(true);
-                this.exceps.add(fatalOpenJPAException);
+                if (datastore){
+                    OpenJPAException openJPAException = new OpenJPAException() {
+                        @Override
+                        public int getType() {
+                            return 0;
+                        }
+                    };
+                    this.exceps.add(openJPAException);
+                    OpenJPAException fatalOpenJPAException = new OpenJPAException() {
+                        @Override
+                        public int getType() {
+                            return 0;
+                        }
+                    };
+                    fatalOpenJPAException.setFatal(true);
+                    this.exceps.add(fatalOpenJPAException);
+                }
                 break;
         }
     }
@@ -102,6 +104,9 @@ public class BrokerImplThrowNestedExceptionsTest {
                     try {
                         throwNestedExceptions.invoke(broker, this.exceps, this.datastore);
                     } catch (Exception e){
+                        if (this.exceps.size() > 1 && this.datastore){
+                            Assert.assertTrue(((OpenJPAException) e.getCause()).isFatal());
+                        }
                         throw e.getCause();
                     }
                     Assert.fail();
