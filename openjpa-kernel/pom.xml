@@ -346,12 +346,13 @@
                             <targetClasses>
                                 <!-- classes to test  -->
                                 <param>org.apache.openjpa.kernel.BrokerImpl</param>
-<!--                                <param>org.apache.openjpa.util.ProxyManagerImpl</param>-->
+                                <param>org.apache.openjpa.util.ProxyManagerImpl</param>
                             </targetClasses>
                             <targetTests>
                                 <!-- test implementations -->
                                 <param>org.apache.openjpa.kernel.BrokerImplHandleCallbackExceptionsTest</param>
                                 <param>org.apache.openjpa.kernel.BrokerImplThrowNestedExceptionsTest</param>
+                                <param>org.apache.openjpa.util.ProxyManagerImplNewCustomProxyTest</param>
 <!--                                <param>org.apache.openjpa.util.ProxyManagerImplLoadBuildTimeProxyTest</param>-->
 <!--                                <param>org.apache.openjpa.util.ProxyManagerImplCopyDateTest</param>-->
                             </targetTests>
