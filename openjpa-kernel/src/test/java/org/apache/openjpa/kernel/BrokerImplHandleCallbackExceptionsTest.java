@@ -47,7 +47,6 @@ public class BrokerImplHandleCallbackExceptionsTest {
                 break;
             case VALID_ONE:
                 exceptions = new Exception[1];
-                exceptions[0] = null;
                 exceptions[0] = new Exception("Dummy exception!");
                 this.exceps = exceptions;
                 break;
