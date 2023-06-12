@@ -353,8 +353,6 @@
                                 <param>org.apache.openjpa.kernel.BrokerImplHandleCallbackExceptionsTest</param>
                                 <param>org.apache.openjpa.kernel.BrokerImplThrowNestedExceptionsTest</param>
                                 <param>org.apache.openjpa.util.ProxyManagerImplNewCustomProxyTest</param>
-<!--                                <param>org.apache.openjpa.util.ProxyManagerImplLoadBuildTimeProxyTest</param>-->
-<!--                                <param>org.apache.openjpa.util.ProxyManagerImplCopyDateTest</param>-->
                             </targetTests>
                             <avoidCallsTo>
                                 <avoidCallsTo>org.slf4j</avoidCallsTo>

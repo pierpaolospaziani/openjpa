@@ -557,12 +557,15 @@ public class ProxyManagerImpl
             if (cons != null)
                 return (Proxy) cls.getConstructor(cons.getParameterTypes()).
                     newInstance(args);
+            System.out.println("ci prova");
             return (Proxy) AccessController.doPrivileged(
                 J2DoPrivHelper.newInstanceAction(cls));
         } catch (InstantiationException ie) {
+            System.out.println("0"+ie);
             throw new UnsupportedException(_loc.get("cant-newinstance",
                 cls.getSuperclass().getName()));
         } catch (PrivilegedActionException pae) {
+            System.out.println("1"+pae);
             Exception e = pae.getException();
             if (e instanceof InstantiationException)
                 throw new UnsupportedException(_loc.get("cant-newinstance",
