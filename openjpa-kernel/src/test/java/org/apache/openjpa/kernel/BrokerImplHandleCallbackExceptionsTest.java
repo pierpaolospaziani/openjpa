@@ -26,7 +26,7 @@ public class BrokerImplHandleCallbackExceptionsTest {
     private final int mode;
     private final Class<? extends Exception> expectedException;
     private enum ObjType {
-        NULL, EMPTY, VALID_ONE, VALID, WRAPPED
+        NULL, EMPTY, INVALID, VALID_ONE, VALID, WRAPPED
     }
 
     public BrokerImplHandleCallbackExceptionsTest(ObjType excepsType, int mode, Class<? extends Exception> expectedException){
@@ -40,8 +40,14 @@ public class BrokerImplHandleCallbackExceptionsTest {
             case EMPTY:
                 this.exceps = new Exception[0];
                 break;
+            case INVALID:
+                exceptions = new Exception[1];
+                exceptions[0] = null;
+                this.exceps = exceptions;
+                break;
             case VALID_ONE:
                 exceptions = new Exception[1];
+                exceptions[0] = null;
                 exceptions[0] = new Exception("Dummy exception!");
                 this.exceps = exceptions;
                 break;
@@ -88,6 +94,9 @@ public class BrokerImplHandleCallbackExceptionsTest {
                 { ObjType.NULL,               -1,           NullPointerException.class },  // 0
                 { ObjType.NULL,                0,           NullPointerException.class },  // 1
                 { ObjType.NULL,                1,           NullPointerException.class },  // 2
+                { ObjType.INVALID,            -1,                      null            },  // 3
+                { ObjType.INVALID,             0,           NullPointerException.class },  // 4
+                { ObjType.INVALID,             1,           NullPointerException.class },  // 5
                 { ObjType.EMPTY,              -1,                      null            },  // 3
                 { ObjType.EMPTY,               0,                      null            },  // 4
                 { ObjType.EMPTY,               1,                      null            },  // 5
