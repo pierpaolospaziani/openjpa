@@ -212,7 +212,7 @@
                         <configuration>
                             <groupId>${ba-dua.groupId}</groupId>
                             <artifactId>ba-dua-agent-rt</artifactId>
-                            <version>${ba-dua.version}</version>
+                            <version>${ba-dua-agent-rt.version}</version>
                             <classifier>all</classifier>
                             <packaging>jar</packaging>
                             <file>${project.basedir}/../ba-dua/ba-dua-agent-rt-${ba-dua-agent-rt.version}-all.jar</file>
