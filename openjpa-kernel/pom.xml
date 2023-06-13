@@ -247,7 +247,6 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
-                            <skip>true</skip>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>${ba-dua.groupId}</groupId>
@@ -264,7 +263,6 @@
                             <goal>copy</goal>
                         </goals>
                         <configuration>
-                            <skip>true</skip>
                             <artifactItems>
                                 <artifactItem>
                                     <groupId>${ba-dua.groupId}</groupId>
