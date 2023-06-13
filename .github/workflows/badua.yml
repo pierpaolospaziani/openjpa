@@ -26,12 +26,6 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Copy ba-dua-agent-rt
-        run: mvn dependency:copy -Dartifact=br.usp.each.saeg:ba-dua-agent-rt-0.6.0-all -DoutputDirectory=./ba-dua
-
-      - name: Copy ba-dua-cli
-        run: mvn dependency:copy -Dartifact=br.usp.each.saeg:ba-dua-cli-0.8.0-all -DoutputDirectory=./ba-dua
-
       - name: Badua check
         run: mvn -B clean verify -P badua -Drat.skip=true
 
