@@ -88,6 +88,15 @@
             <artifactId>jaxb-impl</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>${ba-dua.groupId}</groupId>
+            <artifactId>ba-dua-cli</artifactId>
+            <version>${ba-dua.version}</version>
+            <classifier>all</classifier>
+            <type>jar</type>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../ba-dua/ba-dua-cli-${ba-dua.version}-all.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
