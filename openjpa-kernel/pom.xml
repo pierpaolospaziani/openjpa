@@ -38,7 +38,7 @@
     <properties>
         <ba-dua.groupId>br.usp.each.saeg</ba-dua.groupId>
         <ba-dua-agent-rt.version>0.6.0</ba-dua-agent-rt.version>
-        <ba-dua.version>0.8.0</ba-dua.version>
+        <ba-dua.version>0.6.0</ba-dua.version>
     </properties>
 
     <dependencies>
